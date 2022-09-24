@@ -1,6 +1,7 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
 import { ERC20 } from "typechain";
+import { mockToken, printUSDC, USDC } from "./utils/ERC20Utils";
 
 describe.only("Gateways test", () => {
     let deployer: SignerWithAddress;
@@ -12,22 +13,11 @@ describe.only("Gateways test", () => {
     beforeEach(async function () {
         usdc = await mockToken("USDC");
         [deployer, sender, receiver] = await ethers.getSigners();
-        await usdc.connect(deployer).transfer(sender.address, USDC(100000));
+        await usdc.connect(deployer).transfer(sender.address, USDC(10000));
     });
-    
+
     it("teest usdc allowance", async () => {
         const balance = await usdc.balanceOf(await sender.address);
-        console.log(balance);
+        console.log(printUSDC(balance));
     });
 });
-export const mockToken = async (name: string): Promise<ERC20> => {
-    const t = await ethers.getContractFactory(
-        "contracts/ERC20/ERC20.sol:ERC20"
-    );
-    const token = (await t.deploy(name, name)) as ERC20;
-    console.log(`${name} @ ${token.address}`);
-    return token;
-};
-
-export const USDC = (x: string | number) =>
-    ethers.utils.parseUnits(x.toString(), 18);
