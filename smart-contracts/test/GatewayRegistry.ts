@@ -3,6 +3,9 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import { GatewayRegistry } from "typechain";
 
+//@ts-ignore
+import { expectRevert } from "@openzeppelin/test-helpers";
+
 describe("GatewayRegistry", () => {
     let owner: SignerWithAddress;
     let rando: SignerWithAddress;
@@ -30,6 +33,15 @@ describe("GatewayRegistry", () => {
             const newOwner = await gatewayRegistry.owner();
             expect(newOwner).to.equal(rando.address);
         });
-        it("Rando can't change the owner", () => {});
+        it("Rando can't change the owner", async () => {
+            //Change owner to rando
+            try {
+                gatewayRegistry.connect(rando).setOwner(rando.address);
+                //Sould have thrown
+                expect(false);
+            } catch (e) {
+                expect(true);
+            }
+        });
     });
 });
