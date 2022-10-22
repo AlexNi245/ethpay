@@ -3,7 +3,7 @@ import { ethers } from "hardhat";
 import { ERC20, Gateway } from "typechain";
 import { mockToken, printUSDC, USDC } from "./utils/ERC20Utils";
 
-describe.only("Gateways test", () => {
+describe("Gateways test", () => {
     let deployer: SignerWithAddress;
     let sender: SignerWithAddress;
     let receiver: SignerWithAddress;
