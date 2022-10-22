@@ -4,15 +4,18 @@ import { ethers } from "hardhat";
 import { GatewayRegistry } from "typechain";
 
 //@ts-ignore
-import { expectRevert } from "@openzeppelin/test-helpers";
+import { expectRevert, constants } from "@openzeppelin/test-helpers";
 
 describe("GatewayRegistry", () => {
     let owner: SignerWithAddress;
     let rando: SignerWithAddress;
 
+    let token: SignerWithAddress;
+    let gateway: SignerWithAddress;
+
     let gatewayRegistry: GatewayRegistry;
     beforeEach(async () => {
-        [owner, rando] = await ethers.getSigners();
+        [owner, rando, token, gateway] = await ethers.getSigners();
 
         //Deploy contract
         const gatewayRegistryFactory = await ethers.getContractFactory(
@@ -42,6 +45,32 @@ describe("GatewayRegistry", () => {
             } catch (e) {
                 expect(true);
             }
+        });
+    });
+
+    describe("setToken", () => {
+        it("owner can add new token", async () => {
+            await gatewayRegistry.addToken(token.address, gateway.address);
+
+            const supportedToken = await gatewayRegistry.supportedToken(0);
+            expect(supportedToken).to.be.equal(token.address);
+
+            const expectedGateway = await gatewayRegistry.gateways(
+                token.address
+            );
+            expect(expectedGateway).to.be.equal(gateway.address);
+        });
+        it("owner can remove new token", async () => {
+            await gatewayRegistry.addToken(token.address, gateway.address);
+            await gatewayRegistry.removeToken(token.address);
+
+            const supportedToken = await gatewayRegistry.supportedToken(0);
+            expect(supportedToken).to.be.equal(constants.ZERO_ADDRESS);
+
+            const expectedGateway = await gatewayRegistry.gateways(
+                token.address
+            );
+            expect(expectedGateway).to.be.equal(constants.ZERO_ADDRESS);
         });
     });
 });
