@@ -9,6 +9,9 @@ import "./IGateway.sol";
 contract Gateway is IGateway {
     address public immutable token;
 
+    event TransferSuccessful(address sender, address recipient, uint256 amount);
+    event TransferFailed(address sender, address recipient, uint256 amount);
+
     constructor(address _token) {
         token = _token;
     }
@@ -20,9 +23,9 @@ contract Gateway is IGateway {
     ) public override returns (bool) {
         bool success = IERC20(token).transferFrom(sender, recipient, amount);
         if (success) {
-            console.log("transfer suceeded");
+            emit TransferSuccessful(sender, recipient, amount);
         } else {
-            console.log("transfer failed");
+            emit TransferFailed(sender, recipient, amount);
         }
     }
 }
