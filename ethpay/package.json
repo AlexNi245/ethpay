@@ -7,7 +7,7 @@
         "test": "hardhat test",
         "deploy": "hardhat deploy",
         "node": "hardhat node",
-        "offchain-processor":"nodemon ./offchain-processor/index.ts",
+        "offchain-processor": "nodemon ./offchain-processor/index.ts",
         "lint:fix": "prettier --write 'scripts/**/*.{js,ts}' 'test/**/*.{js,ts}' 'tasks/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json && solhint contracts/**/*.sol",
         "lint": "tslint --config tslint.json --project tsconfig.json && solhint contracts/**/*.sol",
         "format": "prettier --check \"**/*.{ts,js,sol}\"",
@@ -33,8 +33,10 @@
         "@typechain/hardhat": "^6.0.0",
         "@types/chai": "^4.3.1",
         "@types/express": "^4.17.14",
+        "@types/jsonwebtoken": "^8.5.9",
         "@types/mocha": "^9.1.1",
         "@types/node": "^16.18.3",
+        "@types/sinon": "^10.0.13",
         "babel-eslint": "^10.1.0",
         "chai": "^4.3.6",
         "chai-bignumber": "^3.0.0",
@@ -47,12 +49,13 @@
         "mocha-skip-if": "^0.0.3",
         "prettier": "^2.6.2",
         "prettier-plugin-solidity": "^1.0.0-beta.19",
+        "prisma": "^4.5.0",
         "solhint": "^3.3.7",
         "solhint-plugin-prettier": "^0.0.5",
         "solidity-coverage": "^0.7.21",
         "transform": "^1.1.2",
         "ts-generator": "^0.1.1",
-        "ts-node": "^10.7.0",
+        "ts-node": "^10.9.1",
         "tslint": "^6.1.3",
         "tslint-config-prettier": "^1.18.0",
         "tslint-plugin-prettier": "^2.3.0",
@@ -64,6 +67,8 @@
         "timeout": 10000000
     },
     "dependencies": {
-        "express": "^4.18.2"
+        "@prisma/client": "^4.5.0",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^8.5.1"
     }
 }
