@@ -6,7 +6,7 @@ import sinon from "sinon";
 import { AuthService } from "./../../../offchain-processor/service/AuthService";
 import * as jwt from "jsonwebtoken";
 
-describe.only("AuthServiceTest", () => {
+describe("AuthServiceTest", () => {
     const sandBox = sinon.createSandbox();
     let user: SignerWithAddress;
 
