@@ -14,8 +14,8 @@ describe.only("AuthServiceTest", () => {
         [user] = await ethers.getSigners();
     });
     afterEach(async () => {
-        await new PrismaClient().user.deleteMany()
-        await new PrismaClient().payments.deleteMany()
+        await new PrismaClient().user.deleteMany();
+        await new PrismaClient().payments.deleteMany();
         sandBox.restore();
     });
 
@@ -52,5 +52,30 @@ describe.only("AuthServiceTest", () => {
         });
         console.log(session);
         expect(session).to.equal(null);
+    });
+    it("isLoggedIn -- Returns false if user is not logged in", async () => {
+        const database = new PrismaClient();
+
+        const authService = new AuthService(database);
+
+        const addresss = user.address;
+
+        const isLoggedIn = await authService.isLoggedIn(addresss);
+        expect(isLoggedIn).to.equal(false);
+    });
+    it("isLoggedIn -- Returns true if user is logged in ", async () => {
+        const database = new PrismaClient();
+
+        const authService = new AuthService(database);
+
+        const addresss = user.address;
+        const messageSignature = await user.signMessage(
+            AuthService.AuthMessage
+        );
+
+        await authService.login(addresss, messageSignature);
+
+        const isLoggedIn = await authService.isLoggedIn(addresss);
+        expect(isLoggedIn).to.equal(true );
     });
 });

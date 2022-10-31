@@ -17,9 +17,8 @@ export class AuthService {
         address: string,
         messageSignature: string
     ): Promise<string | null> {
-
         if (!this.checkIfSignedMessageIsValid(messageSignature, address)) {
-            return null
+            return null;
         }
         await this.db.user.create({
             data: { address, messageSignature },
@@ -35,6 +34,14 @@ export class AuthService {
         );
 
         return jwtToken;
+    }
+
+    public async isLoggedIn(address: string) {
+        const session = await this.db.user.findFirst({
+            where: { address },
+        });
+
+        return !!session;
     }
 
     private checkIfSignedMessageIsValid(
