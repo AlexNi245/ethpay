@@ -76,30 +76,64 @@ describe.only("GatewayService", () => {
         expect(usersAllowance).to.equal(USDC(100));
     });
 
-    describe("Send Payment",()=>{
-        it("Send Payment", async () => {
+    describe("Send Payment", () => {
+        it("Returns true if token is supported and user has balance ", async () => {
             await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
-    
+
             await usdc
                 .connect(user)
                 .increaseAllowance(usdcGateway.address, USDC(100));
-    
+
             const receiverBalanceBefore = await usdc.balanceOf(rando.address);
-    
-            await new GatewayService(gatewayRegistry, onchainProcessor).sendPayment(
+
+            const sendPaymentResponse = await new GatewayService(
+                gatewayRegistry,
+                onchainProcessor
+            ).sendPayment(
                 usdc.address,
                 user.address,
                 rando.address,
                 USDC(50).toHexString()
             );
-    
+
+            expect(sendPaymentResponse).to.be.true;
+
             const receiverBalanceAfter = await usdc.balanceOf(rando.address);
-    
+
             expect(receiverBalanceAfter).to.be.equal(
                 receiverBalanceBefore.add(USDC(50))
             );
         });
-    })
+        it("Returns false if token is not supported ", async () => {
+            await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
 
+            const sendPaymentResponse = await new GatewayService(
+                gatewayRegistry,
+                onchainProcessor
+            ).sendPayment(
+                //Dai was not added to the registry hence its not supported
+                dai.address,
+                user.address,
+                rando.address,
+                USDC(50).toHexString()
+            );
 
+            expect(sendPaymentResponse).to.be.false;
+        });
+        it("Returns false if token allowance is to low ", async () => {
+            await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
+
+            const sendPaymentResponse = await new GatewayService(
+                gatewayRegistry,
+                onchainProcessor
+            ).sendPayment(
+                usdc.address,
+                user.address,
+                rando.address,
+                USDC(50).toHexString()
+            );
+
+            expect(sendPaymentResponse).to.be.false;
+        });
+    });
 });

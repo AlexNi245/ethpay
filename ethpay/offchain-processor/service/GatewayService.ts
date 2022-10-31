@@ -1,5 +1,5 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { Signer } from "ethers";
+import { BigNumber, Signer } from "ethers";
 import { ethers } from "hardhat";
 import { ERC20, Gateway, GatewayRegistry } from "../../typechain";
 import { token } from "../../typechain/@openzeppelin/contracts";
@@ -74,6 +74,20 @@ export class GatewayService {
             gatewayAddress
         )) as Gateway;
 
+        if (
+            gatewayContract.address ===
+            "0x0000000000000000000000000000000000000000"
+        ) {
+            //Token is not supported
+            return false;
+        }
+
+        const allowance = await this.getAllowance(token, sender);
+
+        if (allowance.lt(BigNumber.from(amount))) {
+            //Allowance is to low
+            return false;
+        }
         try {
             const transactionReceipt = await gatewayContract
                 .connect(this.onchainProcessor)
@@ -83,7 +97,7 @@ export class GatewayService {
 
             return true;
         } catch (e) {
-            console.log(e)
+            console.log(e);
             return false;
         }
     }
