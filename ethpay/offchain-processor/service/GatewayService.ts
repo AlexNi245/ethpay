@@ -1,16 +1,23 @@
+import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
+import { Signer } from "ethers";
 import { ethers } from "hardhat";
-import { ERC20, GatewayRegistry } from "../../typechain";
+import { ERC20, Gateway, GatewayRegistry } from "../../typechain";
 import { token } from "../../typechain/@openzeppelin/contracts";
 import { Token } from "./types";
 
 export class GatewayService {
     private readonly gatewayRegistry: GatewayRegistry;
+    private readonly onchainProcessor: Signer;
 
-    constructor(gatewayRegistry: GatewayRegistry) {
+    constructor(gatewayRegistry: GatewayRegistry, onchainProcessor: Signer) {
         this.gatewayRegistry = gatewayRegistry;
+        this.onchainProcessor = onchainProcessor;
     }
 
-    public static async instance(gatewayRegistryUrl: string) {
+    public static async instance(
+        gatewayRegistryUrl: string,
+        onchainProcessor: Signer
+    ) {
         const gatewayRegistryFactory = await ethers.getContractFactory(
             "GatewayRegistry"
         );
@@ -18,7 +25,7 @@ export class GatewayService {
         const gatewayRegistry = gatewayRegistryFactory.attach(
             gatewayRegistryUrl
         ) as GatewayRegistry;
-        return new GatewayService(gatewayRegistry);
+        return new GatewayService(gatewayRegistry, onchainProcessor);
     }
 
     public async getAllTokens(): Promise<Token[]> {
@@ -53,5 +60,31 @@ export class GatewayService {
         const tokenContract = (await tokenFactory.attach(token)) as ERC20;
 
         return await tokenContract.allowance(user, gateway);
+    }
+
+    public async sendPayment(
+        token: string,
+        sender: string,
+        receiver: string,
+        amount: string
+    ) {
+        const gatewayAddress = await this.gatewayRegistry.gateways(token);
+        const gatewayFactory = await ethers.getContractFactory("Gateway");
+        const gatewayContract = (await gatewayFactory.attach(
+            gatewayAddress
+        )) as Gateway;
+
+        try {
+            const transactionReceipt = await gatewayContract
+                .connect(this.onchainProcessor)
+                .transferFrom(sender, receiver, amount);
+
+            await transactionReceipt.wait();
+
+            return true;
+        } catch (e) {
+            console.log(e)
+            return false;
+        }
     }
 }

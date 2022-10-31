@@ -40,18 +40,19 @@ describe.only("GatewayService", () => {
         const gatewayFactory = ethers.getContractFactory("Gateway");
         usdcGateway = (await (
             await gatewayFactory
-        ).deploy(usdc.address, onchainProcessor.address)) as Gateway;
+        ).deploy(onchainProcessor.address, usdc.address)) as Gateway;
 
         daiGateway = (await (
             await gatewayFactory
-        ).deploy(dai.address, onchainProcessor.address)) as Gateway;
+        ).deploy(onchainProcessor.address, dai.address)) as Gateway;
     });
     it("Get all the tokens from the registry", async () => {
         await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
         await gatewayRegistry.addToken(dai.address, daiGateway.address);
 
         const [token1, token2] = await new GatewayService(
-            gatewayRegistry
+            gatewayRegistry,
+            onchainProcessor
         ).getAllTokens();
 
         expect(token1.address).to.equal(usdc.address);
@@ -62,17 +63,43 @@ describe.only("GatewayService", () => {
     });
     it("Get Users onchain allowance", async () => {
         await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
-        await gatewayRegistry.addToken(dai.address, daiGateway.address);
 
         await usdc
             .connect(user)
             .increaseAllowance(usdcGateway.address, USDC(100));
 
         const usersAllowance = await new GatewayService(
-            gatewayRegistry
+            gatewayRegistry,
+            onchainProcessor
         ).getAllowance(usdc.address, user.address);
-
 
         expect(usersAllowance).to.equal(USDC(100));
     });
+
+    describe("Send Payment",()=>{
+        it("Send Payment", async () => {
+            await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
+    
+            await usdc
+                .connect(user)
+                .increaseAllowance(usdcGateway.address, USDC(100));
+    
+            const receiverBalanceBefore = await usdc.balanceOf(rando.address);
+    
+            await new GatewayService(gatewayRegistry, onchainProcessor).sendPayment(
+                usdc.address,
+                user.address,
+                rando.address,
+                USDC(50).toHexString()
+            );
+    
+            const receiverBalanceAfter = await usdc.balanceOf(rando.address);
+    
+            expect(receiverBalanceAfter).to.be.equal(
+                receiverBalanceBefore.add(USDC(50))
+            );
+        });
+    })
+
+
 });
