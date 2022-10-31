@@ -6,13 +6,20 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./IGateway.sol";
 
 contract Gateway is IGateway {
+    address public immutable processor;
     address public immutable token;
 
     event TransferSuccessful(address sender, address recipient, uint256 amount);
     event TransferFailed(address sender, address recipient, uint256 amount);
 
-    constructor(address _token) {
+    constructor(address _processor, address _token) {
         token = _token;
+        processor = _processor;
+    }
+
+    modifier onlyProcessor() {
+        require(msg.sender == processor, "Only processor");
+        _;
     }
 
     function transferFrom(

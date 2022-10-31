@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-import { GatewayRegistry } from "../../typechain";
+import { ERC20, GatewayRegistry } from "../../typechain";
 import { token } from "../../typechain/@openzeppelin/contracts";
 import { Token } from "./types";
 
@@ -43,7 +43,15 @@ export class GatewayService {
         );
     }
 
-    public async getAllowance(user: string) {
-        
+    public async getAllowance(token: string, user: string) {
+        const gateway = await this.gatewayRegistry.gateways(token);
+
+        const tokenFactory = await ethers.getContractFactory(
+            "contracts/ERC20/ERC20.sol:ERC20"
+        );
+
+        const tokenContract = (await tokenFactory.attach(token)) as ERC20;
+
+        return await tokenContract.allowance(user, gateway);
     }
 }
