@@ -17,7 +17,7 @@ chai.use(chaiString);
 
 chai.should();
 
-describe.only("Auth Test", () => {
+describe("Auth Test", () => {
     const sandBox = sinon.createSandbox();
     let user: SignerWithAddress;
     let rando: SignerWithAddress;

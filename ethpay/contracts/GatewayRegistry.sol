@@ -6,6 +6,8 @@ contract GatewayRegistry {
     mapping(address => address) public gateways;
     address[] public supportedToken;
 
+    uint256 public  numberOfSupportedToken;
+
     modifier onlyOwner() {
         require(msg.sender == owner, "FORBIDDEN");
         _;
@@ -25,6 +27,7 @@ contract GatewayRegistry {
     function addToken(address token, address gateway) public onlyOwner {
         supportedToken.push(token);
         gateways[token] = gateway;
+        numberOfSupportedToken++;
         emit TokenAdded(token, gateway);
     }
 
@@ -41,6 +44,7 @@ contract GatewayRegistry {
         }
 
         delete supportedToken[element];
+        numberOfSupportedToken--;
         emit TokenRemoved(token);
     }
 }

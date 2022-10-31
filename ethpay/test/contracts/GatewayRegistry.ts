@@ -1,10 +1,10 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { GatewayRegistry } from "typechain";
 
 //@ts-ignore
 import { expectRevert, constants } from "@openzeppelin/test-helpers";
+import { GatewayRegistry } from "../../typechain";
 
 describe("GatewayRegistry", () => {
     let owner: SignerWithAddress;

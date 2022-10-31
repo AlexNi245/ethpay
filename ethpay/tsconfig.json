@@ -5,17 +5,8 @@
         "strict": true,
         "esModuleInterop": true,
         "outDir": "dist",
-        "resolveJsonModule": true,
-        "baseUrl": "./"
+        "resolveJsonModule": true
     },
-    "include": [
-        "./scripts",
-        "./test",
-        "./deploy",
-        "./offchain-processor"
-    ],
-    "files": [
-        "./hardhat.config.ts",
-        "./helper-hardhat-config.ts"
-    ]
+    "include": ["./scripts", "./test", "./deploy", "./offchain-processor"],
+    "files": ["./hardhat.config.ts", "./helper-hardhat-config.ts"]
 }

@@ -1,6 +1,6 @@
 import { BigNumberish } from "ethers";
 import { ethers } from "hardhat";
-import { ERC20 } from "typechain";
+import { ERC20 } from "../../../typechain";
 
 export const mockToken = async (name: string): Promise<ERC20> => {
     const t = await ethers.getContractFactory(

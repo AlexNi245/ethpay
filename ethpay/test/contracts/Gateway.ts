@@ -1,6 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
-import { ERC20, Gateway } from "typechain";
+import { ERC20, Gateway } from "../../typechain";
 import { mockToken, printUSDC, USDC } from "./utils/ERC20Utils";
 
 describe("Gateways test", () => {
