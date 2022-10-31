@@ -7,6 +7,7 @@
         "test": "hardhat test",
         "deploy": "hardhat deploy",
         "node": "hardhat node",
+        "offchain-processor":"nodemon ./offchain-processor/index.ts",
         "lint:fix": "prettier --write 'scripts/**/*.{js,ts}' 'test/**/*.{js,ts}' 'tasks/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json && solhint contracts/**/*.sol",
         "lint": "tslint --config tslint.json --project tsconfig.json && solhint contracts/**/*.sol",
         "format": "prettier --check \"**/*.{ts,js,sol}\"",
@@ -31,14 +32,15 @@
         "@typechain/ethers-v5": "^10.0.0",
         "@typechain/hardhat": "^6.0.0",
         "@types/chai": "^4.3.1",
+        "@types/express": "^4.17.14",
         "@types/mocha": "^9.1.1",
-        "@types/node": "^16.11.32",
+        "@types/node": "^16.18.3",
         "babel-eslint": "^10.1.0",
         "chai": "^4.3.6",
         "chai-bignumber": "^3.0.0",
         "chai-bn": "^0.3.1",
         "chai-ethers": "^0.0.1",
-        "dotenv": "^16.0.0",
+        "dotenv": "^16.0.3",
         "ethers": "^5.6.4",
         "hardhat": "^2.9.3",
         "hardhat-deploy": "^0.11.4",
@@ -55,10 +57,13 @@
         "tslint-config-prettier": "^1.18.0",
         "tslint-plugin-prettier": "^2.3.0",
         "typechain": "^8.0.0",
-        "typescript": "^4.6.4",
+        "typescript": "^4.8.4",
         "web3": "^1.8.0"
     },
     "mocha": {
         "timeout": 10000000
+    },
+    "dependencies": {
+        "express": "^4.18.2"
     }
 }
