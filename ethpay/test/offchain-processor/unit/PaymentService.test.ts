@@ -8,6 +8,7 @@ import {
     AddPaymentResponse,
     PaymentService,
 } from "../../../offchain-processor/service/PaymentService";
+import { Token } from "../../../offchain-processor/service/types";
 import { ERC20, Gateway, GatewayRegistry } from "../../../typechain";
 import { mockToken, USDC } from "../../contracts/utils/ERC20Utils";
 
@@ -53,7 +54,7 @@ describe("PaymentService", () => {
         ).deploy(onchainProcessor.address, dai.address)) as Gateway;
     });
     describe("addPayment", () => {
-        it.only("ID 12: Returns UNSUPPORTED if the selected token has no gateway", async () => {
+        it("ID 12: Returns UNSUPPORTED if the selected token has no gateway", async () => {
             const gatewayServiceMock = {
                 getAllTokens: () => Promise.resolve([]),
             } as unknown as GatewayService;
@@ -72,6 +73,34 @@ describe("PaymentService", () => {
             );
 
             expect(response).to.equal(AddPaymentResponse.UNSUPPORTED);
+        });
+        it.only("ID 13: Returns ISUFFIECIENT_BALANCE if the allowance of the user is lowaer then the selected ammount", async () => {
+            const gatewayServiceMock = {
+                getAllTokens: () =>
+                    Promise.resolve([
+                        {
+                            address: dai.address,
+                            gateway: daiGateway.address,
+                        } as Token,
+                    ]),
+                getAllowance: (token: string, sender: string) =>
+                    Promise.resolve(BigNumber.from(100)),
+            } as unknown as GatewayService;
+            const database = new PrismaClient();
+
+            const paymentService = new PaymentService(
+                database,
+                gatewayServiceMock
+            );
+
+            const response = await paymentService.addPayment(
+                dai.address,
+                owner.address,
+                rando.address,
+                BigNumber.from(1000)
+            );
+
+            expect(response).to.equal(AddPaymentResponse.INSUFFICIENT_BALANCE);
         });
     });
 });

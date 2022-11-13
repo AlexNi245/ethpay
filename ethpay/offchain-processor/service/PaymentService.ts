@@ -29,9 +29,16 @@ export class PaymentService {
         if (!isSupported) {
             return AddPaymentResponse.UNSUPPORTED;
         }
+
+        const allowance = await this.gatewayService.getAllowance(token, sender);
+
+        if (allowance.lt(amount)) {
+            return AddPaymentResponse.INSUFFICIENT_BALANCE;
+        }
     }
 }
 
 export enum AddPaymentResponse {
     UNSUPPORTED,
+    INSUFFICIENT_BALANCE,
 }
