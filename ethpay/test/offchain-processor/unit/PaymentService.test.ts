@@ -53,6 +53,12 @@ describe("PaymentService", () => {
             await gatewayFactory
         ).deploy(onchainProcessor.address, dai.address)) as Gateway;
     });
+
+    afterEach(async () => {
+        await new PrismaClient().payments.deleteMany();
+        await new PrismaClient().user.deleteMany();
+    });
+
     describe("addPayment", () => {
         it("ID 12: Returns UNSUPPORTED if the selected token has no gateway", async () => {
             const gatewayServiceMock = {
@@ -132,6 +138,54 @@ describe("PaymentService", () => {
             const payments = await database.payments.count();
             expect(payments).to.equal(1);
             expect(response).to.equal(AddPaymentResponse.SUCCESS);
+        });
+    });
+
+    describe("getPayments", () => {
+        it("ID15: returns returns all payments made by the user", async () => {
+            const gatewayServiceMock = {
+                getAllTokens: () =>
+                    Promise.resolve([
+                        {
+                            address: dai.address,
+                            gateway: daiGateway.address,
+                        } as Token,
+                    ]),
+                getAllowance: (token: string, sender: string) =>
+                    Promise.resolve(BigNumber.from(10000)),
+                sendPayment: () => Promise.resolve(true),
+            } as unknown as GatewayService;
+            const database = new PrismaClient();
+
+            const paymentService = new PaymentService(
+                database,
+                gatewayServiceMock
+            );
+
+            await paymentService.addPayment(
+                dai.address,
+                owner.address,
+                rando.address,
+                BigNumber.from(1000)
+            );
+
+            await paymentService.addPayment(
+                dai.address,
+                owner.address,
+                rando.address,
+                BigNumber.from(1000)
+            );
+
+            await paymentService.addPayment(
+                dai.address,
+                owner.address,
+                rando.address,
+                BigNumber.from(1000)
+            );
+
+            const payments = await paymentService.getPayments(owner.address);
+
+            expect(payments.length).to.equal(3);
         });
     });
 });

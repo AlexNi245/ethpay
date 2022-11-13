@@ -56,6 +56,15 @@ export class PaymentService {
         });
         return AddPaymentResponse.SUCCESS;
     }
+    public getPayments(userUid: string) {
+        return this.db.payments.findMany({
+            where: {
+                senderAddress: {
+                    equals: userUid,
+                },
+            },
+        });
+    }
 }
 
 export enum AddPaymentResponse {
