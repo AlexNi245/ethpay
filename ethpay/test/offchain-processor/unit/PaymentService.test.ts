@@ -74,7 +74,7 @@ describe("PaymentService", () => {
 
             expect(response).to.equal(AddPaymentResponse.UNSUPPORTED);
         });
-        it.only("ID 13: Returns ISUFFIECIENT_BALANCE if the allowance of the user is lowaer then the selected ammount", async () => {
+        it("ID 13: Returns ISUFFIECIENT_BALANCE if the allowance of the user is lowaer then the selected ammount", async () => {
             const gatewayServiceMock = {
                 getAllTokens: () =>
                     Promise.resolve([
@@ -101,6 +101,37 @@ describe("PaymentService", () => {
             );
 
             expect(response).to.equal(AddPaymentResponse.INSUFFICIENT_BALANCE);
+        });
+        it("ID 14: Returns SUCCESS if payment was succcesful", async () => {
+            const gatewayServiceMock = {
+                getAllTokens: () =>
+                    Promise.resolve([
+                        {
+                            address: dai.address,
+                            gateway: daiGateway.address,
+                        } as Token,
+                    ]),
+                getAllowance: (token: string, sender: string) =>
+                    Promise.resolve(BigNumber.from(10000)),
+                sendPayment: () => Promise.resolve(true),
+            } as unknown as GatewayService;
+            const database = new PrismaClient();
+
+            const paymentService = new PaymentService(
+                database,
+                gatewayServiceMock
+            );
+
+            const response = await paymentService.addPayment(
+                dai.address,
+                owner.address,
+                rando.address,
+                BigNumber.from(1000)
+            );
+
+            const payments = await database.payments.count();
+            expect(payments).to.equal(1);
+            expect(response).to.equal(AddPaymentResponse.SUCCESS);
         });
     });
 });

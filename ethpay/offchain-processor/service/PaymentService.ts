@@ -35,10 +35,32 @@ export class PaymentService {
         if (allowance.lt(amount)) {
             return AddPaymentResponse.INSUFFICIENT_BALANCE;
         }
+
+        const success = await this.gatewayService.sendPayment(
+            token,
+            sender,
+            receiver,
+            amount.toHexString()
+        );
+
+        if (!success) {
+            return AddPaymentResponse.FAILURE;
+        }
+        await this.db.payments.create({
+            data: {
+                senderAddress: sender,
+                receiverAddress: receiver,
+                Token: token,
+                Amount: amount.toNumber(),
+            },
+        });
+        return AddPaymentResponse.SUCCESS;
     }
 }
 
 export enum AddPaymentResponse {
     UNSUPPORTED,
     INSUFFICIENT_BALANCE,
+    SUCCESS,
+    FAILURE,
 }
