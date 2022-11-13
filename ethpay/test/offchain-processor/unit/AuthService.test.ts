@@ -3,8 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 import sinon from "sinon";
-import { AuthService } from "./../../../offchain-processor/service/AuthService";
-import * as jwt from "jsonwebtoken";
+import { AuthService } from "../../../offchain-processor/service/AuthService";
 
 describe("AuthServiceTest", () => {
     const sandBox = sinon.createSandbox();
@@ -19,7 +18,7 @@ describe("AuthServiceTest", () => {
         sandBox.restore();
     });
 
-    it("login -- User can sign in with valid signature", async () => {
+    it("ID8: login -- User can sign in with valid signature", async () => {
         const database = new PrismaClient();
 
         const authService = new AuthService(database);
@@ -37,7 +36,7 @@ describe("AuthServiceTest", () => {
         expect((await session).address).to.equal(addresss);
         expect(jwtToken).to.not.be.null;
     });
-    it("login -- Fails if signature is invalid", async () => {
+    it("ID9: login -- Fails if signature is invalid", async () => {
         const database = new PrismaClient();
 
         const authService = new AuthService(database);
@@ -53,7 +52,7 @@ describe("AuthServiceTest", () => {
         console.log(session);
         expect(session).to.equal(null);
     });
-    it("isLoggedIn -- Returns false if user is not logged in", async () => {
+    it("ID10: isLoggedIn -- Returns false if user is not logged in", async () => {
         const database = new PrismaClient();
 
         const authService = new AuthService(database);
@@ -63,7 +62,7 @@ describe("AuthServiceTest", () => {
         const isLoggedIn = await authService.isLoggedIn(addresss);
         expect(isLoggedIn).to.equal(false);
     });
-    it("isLoggedIn -- Returns true if user is logged in ", async () => {
+    it("ID11: isLoggedIn -- Returns true if user is logged in ", async () => {
         const database = new PrismaClient();
 
         const authService = new AuthService(database);
@@ -76,6 +75,6 @@ describe("AuthServiceTest", () => {
         await authService.login(addresss, messageSignature);
 
         const isLoggedIn = await authService.isLoggedIn(addresss);
-        expect(isLoggedIn).to.equal(true );
+        expect(isLoggedIn).to.equal(true);
     });
 });

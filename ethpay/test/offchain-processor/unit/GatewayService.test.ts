@@ -1,5 +1,7 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
-import { expect } from "chai";
+import { fail } from "assert";
+import { assert, expect } from "chai";
+import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { GatewayService } from "../../../offchain-processor/service/GatewayService";
 import { ERC20, Gateway, GatewayRegistry } from "../../../typechain";
@@ -46,7 +48,34 @@ describe.only("GatewayService", () => {
             await gatewayFactory
         ).deploy(onchainProcessor.address, dai.address)) as Gateway;
     });
-    it("Get all the tokens from the registry", async () => {
+    it("ID1: Get Users onchain allowance", async () => {
+        await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
+
+        await usdc
+            .connect(user)
+            .increaseAllowance(usdcGateway.address, USDC(100));
+
+        const usersAllowance = await new GatewayService(
+            gatewayRegistry,
+            onchainProcessor
+        ).getAllowance(usdc.address, user.address);
+
+        expect(usersAllowance).to.equal(USDC(100));
+    });
+    it("ID2: Return if Token is not supported", async () => {
+        await usdc
+            .connect(user)
+            .increaseAllowance(usdcGateway.address, USDC(100));
+
+        const usersAllowance = await new GatewayService(
+            gatewayRegistry,
+            onchainProcessor
+        ).getAllowance(usdc.address, user.address);
+
+        expect(usersAllowance).to.equal(BigNumber.from(0));
+    });
+
+    it("ID3: Get all the tokens from the registry", async () => {
         await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
         await gatewayRegistry.addToken(dai.address, daiGateway.address);
 
@@ -61,23 +90,28 @@ describe.only("GatewayService", () => {
         expect(token2.address).to.equal(dai.address);
         expect(token2.gateway).to.equal(daiGateway.address);
     });
-    it("Get Users onchain allowance", async () => {
-        await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
+    it("ID4: Return all supported tokens", async () => {
+        const gatewayRegistryFactory = await ethers.getContractFactory(
+            "GatewayRegistry"
+        );
 
-        await usdc
-            .connect(user)
-            .increaseAllowance(usdcGateway.address, USDC(100));
+        const invalidGatewayRegistry = gatewayRegistryFactory.attach(
+            ethers.constants.AddressZero
+        ) as GatewayRegistry;
 
-        const usersAllowance = await new GatewayService(
-            gatewayRegistry,
-            onchainProcessor
-        ).getAllowance(usdc.address, user.address);
-
-        expect(usersAllowance).to.equal(USDC(100));
+        try {
+            const allTokens = await new GatewayService(
+                invalidGatewayRegistry,
+                onchainProcessor
+            ).getAllTokens();
+            fail("Method should have thrown");
+        } catch (e:any) {
+            expect(e).to.not.be.undefined;
+        }
     });
 
     describe("Send Payment", () => {
-        it("Returns true if token is supported and user has balance ", async () => {
+        it("ID5: Returns true if token is supported and user has balance ", async () => {
             await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
 
             await usdc
@@ -104,7 +138,22 @@ describe.only("GatewayService", () => {
                 receiverBalanceBefore.add(USDC(50))
             );
         });
-        it("Returns false if token is not supported ", async () => {
+        it("ID6:Returns false if token allowance is to low ", async () => {
+            await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
+
+            const sendPaymentResponse = await new GatewayService(
+                gatewayRegistry,
+                onchainProcessor
+            ).sendPayment(
+                usdc.address,
+                user.address,
+                rando.address,
+                USDC(50).toHexString()
+            );
+
+            expect(sendPaymentResponse).to.be.false;
+        });
+        it("ID7: Returns false if token is not supported ", async () => {
             await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
 
             const sendPaymentResponse = await new GatewayService(
@@ -113,21 +162,6 @@ describe.only("GatewayService", () => {
             ).sendPayment(
                 //Dai was not added to the registry hence its not supported
                 dai.address,
-                user.address,
-                rando.address,
-                USDC(50).toHexString()
-            );
-
-            expect(sendPaymentResponse).to.be.false;
-        });
-        it("Returns false if token allowance is to low ", async () => {
-            await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
-
-            const sendPaymentResponse = await new GatewayService(
-                gatewayRegistry,
-                onchainProcessor
-            ).sendPayment(
-                usdc.address,
                 user.address,
                 rando.address,
                 USDC(50).toHexString()
