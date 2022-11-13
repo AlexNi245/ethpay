@@ -7,7 +7,7 @@ import { GatewayService } from "../../../offchain-processor/service/GatewayServi
 import { ERC20, Gateway, GatewayRegistry } from "../../../typechain";
 import { mockToken, USDC } from "../../contracts/utils/ERC20Utils";
 
-describe.only("GatewayService", () => {
+describe("GatewayService", () => {
     let gatewayRegistry: GatewayRegistry;
 
     let owner: SignerWithAddress;
