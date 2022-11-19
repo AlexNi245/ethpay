@@ -61,6 +61,15 @@ export class GatewayService {
 
         return await tokenContract.allowance(user, gateway);
     }
+    public async getBalance(token: string, user: string) {
+        const tokenFactory = await ethers.getContractFactory(
+            "contracts/ERC20/ERC20.sol:ERC20"
+        );
+
+        const tokenContract = (await tokenFactory.attach(token)) as ERC20;
+
+        return await tokenContract.balanceOf(user);
+    }
 
     public async sendPayment(
         token: string,

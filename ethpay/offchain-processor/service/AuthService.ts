@@ -43,6 +43,19 @@ export class AuthService {
 
         return !!session;
     }
+    public getAddress(token: string) {
+        try {
+            const { sub } = jwt.verify(token, encryptionkey);
+            //This token is not valid
+            if (!sub) {
+                return undefined;
+            }
+
+            return sub.toString();
+        } catch (e) {
+            return undefined;
+        }
+    }
 
     private checkIfSignedMessageIsValid(
         messageSignature: string,
