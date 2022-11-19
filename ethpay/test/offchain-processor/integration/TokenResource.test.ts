@@ -73,7 +73,7 @@ describe("Token Resource", () => {
 
             const res = await chai
                 .request(tokenResource(db, gatewayRegistry, onchainProcessor))
-                .get("/getAllTokens")
+                .get("/all")
                 .send();
             expect(res.status).to.equal(200);
             console.log(res.body);

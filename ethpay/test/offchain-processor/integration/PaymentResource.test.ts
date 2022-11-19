@@ -176,14 +176,14 @@ describe("Payment Resource", () => {
                 expect(res.body.payment.receiverAddress).to.equal(
                     rando.address
                 );
-                expect(res.body.payment.Amount).to.equal(USDC(20));
+                expect(res.body.payment.Amount).to.equal(USDC(19.8));
                 expect(res.body.payment.Token).to.equal(usdc.address);
                 expect(res.body.payment.senderAddress).to.equal(user.address);
             });
         });
 
         describe("add Payment", () => {
-            it.only("ID13 Returns 200 and the id a payment was successful", async () => {
+            it("ID13 Returns 200 and the id a payment was successful", async () => {
                 await usdc
                     .connect(user)
                     .increaseAllowance(usdcGateway.address, USDC(100));

@@ -14,7 +14,7 @@ export const tokenResource = (
     app.use(require("body-parser").json());
 
     app.get(
-        "/getAllTokens",
+        "/all",
         async (req: express.Request, res: express.Response) => {
             const allTokens = await new GatewayService(
                 gatewayRegistry,

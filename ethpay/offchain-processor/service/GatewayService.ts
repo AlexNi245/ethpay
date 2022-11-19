@@ -1,8 +1,6 @@
-import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { BigNumber, Signer } from "ethers";
 import { ethers } from "hardhat";
 import { ERC20, Gateway, GatewayRegistry } from "../../typechain";
-import { token } from "../../typechain/@openzeppelin/contracts";
 import { Token } from "./types";
 
 export class GatewayService {
