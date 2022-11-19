@@ -4,6 +4,7 @@ import { expect } from "chai";
 import { ethers } from "hardhat";
 import sinon from "sinon";
 import { AuthService } from "../../../offchain-processor/service/AuthService";
+import { clearDb } from "../../contracts/utils/clearDb";
 
 describe("AuthServiceTest", () => {
     const sandBox = sinon.createSandbox();
@@ -13,8 +14,7 @@ describe("AuthServiceTest", () => {
         [user] = await ethers.getSigners();
     });
     afterEach(async () => {
-        await new PrismaClient().user.deleteMany();
-        await new PrismaClient().payments.deleteMany();
+        await clearDb();
         sandBox.restore();
     });
 

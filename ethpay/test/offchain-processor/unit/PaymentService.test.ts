@@ -5,11 +5,12 @@ import { BigNumber } from "ethers";
 import { ethers } from "hardhat";
 import { GatewayService } from "../../../offchain-processor/service/GatewayService";
 import {
-    AddPaymentResponse,
+    AddPaymentResult,
     PaymentService,
 } from "../../../offchain-processor/service/PaymentService";
 import { Token } from "../../../offchain-processor/service/types";
 import { ERC20, Gateway, GatewayRegistry } from "../../../typechain";
+import { clearDb } from "../../contracts/utils/clearDb";
 import { mockToken, USDC } from "../../contracts/utils/ERC20Utils";
 
 describe("PaymentService", () => {
@@ -55,8 +56,7 @@ describe("PaymentService", () => {
     });
 
     afterEach(async () => {
-        await new PrismaClient().payments.deleteMany();
-        await new PrismaClient().user.deleteMany();
+        clearDb();
     });
 
     describe("addPayment", () => {
@@ -78,7 +78,7 @@ describe("PaymentService", () => {
                 BigNumber.from(0)
             );
 
-            expect(response).to.equal(AddPaymentResponse.UNSUPPORTED);
+            expect(response).to.equal(AddPaymentResult.UNSUPPORTED);
         });
         it("ID 13: Returns ISUFFIECIENT_BALANCE if the allowance of the user is lowaer then the selected ammount", async () => {
             const gatewayServiceMock = {
@@ -106,7 +106,7 @@ describe("PaymentService", () => {
                 BigNumber.from(1000)
             );
 
-            expect(response).to.equal(AddPaymentResponse.INSUFFICIENT_BALANCE);
+            expect(response).to.equal(AddPaymentResult.INSUFFICIENT_BALANCE);
         });
         it("ID 14: Returns SUCCESS if payment was succcesful", async () => {
             const gatewayServiceMock = {
@@ -135,9 +135,9 @@ describe("PaymentService", () => {
                 BigNumber.from(1000)
             );
 
-            const payments = await database.payments.count();
+            const payments = await database.payment.count();
             expect(payments).to.equal(1);
-            expect(response).to.equal(AddPaymentResponse.SUCCESS);
+            expect(response).to.equal(AddPaymentResult.SUCCESS);
         });
     });
 

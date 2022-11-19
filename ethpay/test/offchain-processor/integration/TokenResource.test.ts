@@ -11,6 +11,7 @@ import chai = require("chai");
 import chaiAsPromised = require("chai-as-promised");
 import chaiHttp = require("chai-http");
 import chaiString = require("chai-string");
+import { clearDb } from "../../contracts/utils/clearDb";
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);
@@ -61,8 +62,7 @@ describe("Token Resource", () => {
         ).deploy(onchainProcessor.address, dai.address)) as Gateway;
     });
     afterEach(async () => {
-        await new PrismaClient().user.deleteMany();
-        await new PrismaClient().payments.deleteMany();
+        await clearDb();
         sandBox.restore();
     });
 

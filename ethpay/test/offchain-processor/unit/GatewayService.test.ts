@@ -48,6 +48,8 @@ describe("GatewayService", () => {
             await gatewayFactory
         ).deploy(onchainProcessor.address, dai.address)) as Gateway;
     });
+
+    
     it("ID1: Get Users onchain allowance", async () => {
         await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
 
