@@ -1,18 +1,16 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { PrismaClient } from "@prisma/client";
+import { expect } from "chai";
 import { ethers } from "hardhat";
-import { AuthService } from "./../../../offchain-processor/service/AuthService";
 import sinon from "sinon";
+import { tokenResource } from "../../../offchain-processor/resource/tokenResource";
+import { ERC20, Gateway, GatewayRegistry } from "../../../typechain";
+import { mockToken, USDC } from "../../contracts/utils/ERC20Utils";
 
 import chai = require("chai");
 import chaiAsPromised = require("chai-as-promised");
 import chaiHttp = require("chai-http");
 import chaiString = require("chai-string");
-import { expect } from "chai";
-import { authResource } from "./../../../offchain-processor/resource/authResource";
-import { GatewayRegistry, ERC20, Gateway } from "../../../typechain";
-import { mockToken, USDC } from "../../contracts/utils/ERC20Utils";
-import { tokenResource } from "../../../offchain-processor/resource/tokenResource";
 
 chai.use(chaiAsPromised);
 chai.use(chaiHttp);

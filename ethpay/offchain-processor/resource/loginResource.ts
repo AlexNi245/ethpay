@@ -1,13 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import { ethers } from "hardhat";
-import { AuthService } from "./../service/AuthService";
+import { AuthService } from "../service/AuthService";
 
-export const authResource = (db: PrismaClient) => {
+export const loginResource = (db: PrismaClient) => {
     const app = express();
     app.use(require("body-parser").json());
 
-    app.post("/login", async (req: express.Request, res: express.Response) => {
+    app.post("/", async (req: express.Request, res: express.Response) => {
         const {
             address,
             messageSignature,
