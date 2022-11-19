@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { ethers } from "hardhat";
 import sinon from "sinon";
 import { GatewayRegistry, ERC20, Gateway } from "../../../typechain";
-import { mockToken, USDC } from "../../contracts/utils/ERC20Utils";
+import { mockToken, printUSDC, USDC } from "../../contracts/utils/ERC20Utils";
 import chai = require("chai");
 import chaiAsPromised = require("chai-as-promised");
 import chaiHttp = require("chai-http");
@@ -183,7 +183,7 @@ describe("Payment Resource", () => {
         });
 
         describe("add Payment", () => {
-            it("ID13 Returns 200 and the id a payment was successful", async () => {
+            it.only("ID13 Returns 200 and the id a payment was successful", async () => {
                 await usdc
                     .connect(user)
                     .increaseAllowance(usdcGateway.address, USDC(100));
@@ -229,8 +229,9 @@ describe("Payment Resource", () => {
                 const randosAfterPaymentBalance = await usdc.balanceOf(
                     rando.address
                 );
+                //Randos Balance quals the amount after fee
                 expect(randosAfterPaymentBalance).to.equal(
-                    randosPreviousBalance.add(USDC(20))
+                    randosPreviousBalance.add(USDC(19.8))
                 );
             });
 

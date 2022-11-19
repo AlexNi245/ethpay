@@ -3,8 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { BigNumber } from "ethers";
 import { GatewayService } from "./GatewayService";
 
-const VARIABLE_FEE = "";
-const FIXED_FEE = "";
+const VARIABLE_FEE = 1;
 
 export class PaymentService {
     private readonly gatewayService: GatewayService;
@@ -48,11 +47,13 @@ export class PaymentService {
             };
         }
 
+        const amountAfterFees = this.amountAfterFees(amount).toHexString();
+
         const success = await this.gatewayService.sendPayment(
             token,
             sender,
             receiver,
-            amount.toHexString()
+            amountAfterFees
         );
 
         if (!success) {
@@ -65,7 +66,7 @@ export class PaymentService {
                 senderAddress: sender,
                 receiverAddress: receiver,
                 Token: token,
-                Amount: amount.toHexString(),
+                Amount: amountAfterFees,
             },
         });
 
@@ -91,6 +92,9 @@ export class PaymentService {
                 },
             },
         });
+    }
+    private amountAfterFees(amount: BigNumber) {
+        return amount.div(100).mul(100 - VARIABLE_FEE);
     }
 }
 

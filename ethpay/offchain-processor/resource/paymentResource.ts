@@ -59,8 +59,6 @@ export const paymentResource = (
                 BigNumber.from(amount)
             );
 
-            console.log("RES", result);
-
             if (result === AddPaymentResult.UNSUPPORTED) {
                 return res.status(400).send({ error: "Unsupported Token" });
             }
