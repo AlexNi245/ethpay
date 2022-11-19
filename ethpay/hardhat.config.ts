@@ -20,7 +20,14 @@ module.exports = {
             // }
         },
         localhost: {},
+        polygon: {
+            url: "https://polygon-rpc.com",
+            accounts: [process.env.REGISTRY_OWNER_PRIVATE_KEY],
+        },
     },
+    etherscan: {
+        apiKey: process.env.POLYGONSCAN_API_KEY,
+     },
     namedAccounts: {
         deployer: {
             default: 0, // here this will by default take the first account as deployer
