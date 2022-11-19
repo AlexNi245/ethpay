@@ -56,7 +56,7 @@ describe("PaymentService", () => {
     });
 
     afterEach(async () => {
-        clearDb();
+        await clearDb();
     });
 
     describe("addPayment", () => {
@@ -78,9 +78,9 @@ describe("PaymentService", () => {
                 BigNumber.from(0)
             );
 
-            expect(response).to.equal(AddPaymentResult.UNSUPPORTED);
+            expect(response.result).to.equal(AddPaymentResult.UNSUPPORTED);
         });
-        it("ID 13: Returns ISUFFIECIENT_BALANCE if the allowance of the user is lowaer then the selected ammount", async () => {
+        it("ID 13: Returns ISUFFIECIENT_ALLOWANCE if the allowance of the user is lowaer then the selected ammount", async () => {
             const gatewayServiceMock = {
                 getAllTokens: () =>
                     Promise.resolve([
@@ -90,6 +90,8 @@ describe("PaymentService", () => {
                         } as Token,
                     ]),
                 getAllowance: (token: string, sender: string) =>
+                    Promise.resolve(BigNumber.from(100)),
+                getBalance: (token: string, sender: string) =>
                     Promise.resolve(BigNumber.from(100)),
             } as unknown as GatewayService;
             const database = new PrismaClient();
@@ -106,7 +108,9 @@ describe("PaymentService", () => {
                 BigNumber.from(1000)
             );
 
-            expect(response).to.equal(AddPaymentResult.INSUFFICIENT_BALANCE);
+            expect(response.result).to.equal(
+                AddPaymentResult.INSUFFICIENT_ALLOWANCE
+            );
         });
         it("ID 14: Returns SUCCESS if payment was succcesful", async () => {
             const gatewayServiceMock = {
@@ -118,6 +122,8 @@ describe("PaymentService", () => {
                         } as Token,
                     ]),
                 getAllowance: (token: string, sender: string) =>
+                    Promise.resolve(BigNumber.from(10000)),
+                getBalance: (token: string, sender: string) =>
                     Promise.resolve(BigNumber.from(10000)),
                 sendPayment: () => Promise.resolve(true),
             } as unknown as GatewayService;
@@ -137,7 +143,7 @@ describe("PaymentService", () => {
 
             const payments = await database.payment.count();
             expect(payments).to.equal(1);
-            expect(response).to.equal(AddPaymentResult.SUCCESS);
+            expect(response.result).to.equal(AddPaymentResult.SUCCESS);
         });
     });
 
@@ -152,6 +158,8 @@ describe("PaymentService", () => {
                         } as Token,
                     ]),
                 getAllowance: (token: string, sender: string) =>
+                    Promise.resolve(BigNumber.from(10000)),
+                getBalance: (token: string, sender: string) =>
                     Promise.resolve(BigNumber.from(10000)),
                 sendPayment: () => Promise.resolve(true),
             } as unknown as GatewayService;

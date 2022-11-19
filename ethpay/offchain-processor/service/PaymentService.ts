@@ -27,13 +27,25 @@ export class PaymentService {
         );
 
         if (!isSupported) {
-            return AddPaymentResponse.UNSUPPORTED;
+            return {
+                result: AddPaymentResult.UNSUPPORTED,
+            };
         }
 
         const allowance = await this.gatewayService.getAllowance(token, sender);
 
         if (allowance.lt(amount)) {
-            return AddPaymentResponse.INSUFFICIENT_BALANCE;
+            return {
+                result: AddPaymentResult.INSUFFICIENT_ALLOWANCE,
+            };
+        }
+
+        const balance = await this.gatewayService.getBalance(token, sender);
+
+        if (balance.lt(amount)) {
+            return {
+                result: AddPaymentResult.INSUFFICIENT_BALANCE,
+            };
         }
 
         const success = await this.gatewayService.sendPayment(
@@ -44,32 +56,53 @@ export class PaymentService {
         );
 
         if (!success) {
-            return AddPaymentResponse.FAILURE;
+            return {
+                result: AddPaymentResult.FAILURE,
+            };
         }
-        await this.db.payments.create({
+        const { id } = await this.db.payment.create({
             data: {
                 senderAddress: sender,
                 receiverAddress: receiver,
                 Token: token,
-                Amount: amount.toNumber(),
+                Amount: amount.toHexString(),
             },
         });
-        return AddPaymentResponse.SUCCESS;
+
+        return {
+            result: AddPaymentResult.SUCCESS,
+            payload: id,
+        };
     }
-    public getPayments(userUid: string) {
-        return this.db.payments.findMany({
+    public getPaymentById(id: string) {
+        return this.db.payment.findFirst({
+            where: {
+                id: {
+                    equals: Number.parseInt(id),
+                },
+            },
+        });
+    }
+    public getPayments(address: string) {
+        return this.db.payment.findMany({
             where: {
                 senderAddress: {
-                    equals: userUid,
+                    equals: address,
                 },
             },
         });
     }
 }
 
-export enum AddPaymentResponse {
+export enum AddPaymentResult {
     UNSUPPORTED,
     INSUFFICIENT_BALANCE,
+    INSUFFICIENT_ALLOWANCE,
     SUCCESS,
     FAILURE,
+}
+
+export interface AddPaymentResponse {
+    result: AddPaymentResult;
+    payload: any;
 }
