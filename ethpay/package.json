@@ -4,10 +4,10 @@
     "description": "",
     "scripts": {
         "compile": "hardhat compile",
-        "test": "hardhat test",
+        "test": "hardhat test --network hardhat",
         "deploy": "hardhat deploy",
         "node": "hardhat node",
-        "offchain-processor": "nodemon ./offchain-processor/index.ts",
+        "offchain-processor": "nodemon ./offchain-processor/index.ts --network polygon",
         "lint:fix": "prettier --write 'scripts/**/*.{js,ts}' 'test/**/*.{js,ts}' 'tasks/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json && solhint contracts/**/*.sol",
         "lint": "tslint --config tslint.json --project tsconfig.json && solhint contracts/**/*.sol",
         "format": "prettier --check \"**/*.{ts,js,sol}\"",

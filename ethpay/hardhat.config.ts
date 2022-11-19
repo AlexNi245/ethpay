@@ -11,7 +11,7 @@ import "hardhat-deploy";
 import "solidity-coverage";
 
 module.exports = {
-    defaultNetwork: "hardhat",
+    defaultNetwork: "polygon",
     networks: {
         hardhat: {
             // // If you want to do some forking, uncomment this
@@ -23,11 +23,12 @@ module.exports = {
         polygon: {
             url: "https://polygon-rpc.com",
             accounts: [process.env.REGISTRY_OWNER_PRIVATE_KEY],
+            gasPrice: 50000000000,
         },
     },
     etherscan: {
         apiKey: process.env.POLYGONSCAN_API_KEY,
-     },
+    },
     namedAccounts: {
         deployer: {
             default: 0, // here this will by default take the first account as deployer
