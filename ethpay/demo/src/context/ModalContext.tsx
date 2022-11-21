@@ -1,7 +1,7 @@
 import { useDisclosure } from "@chakra-ui/react";
 import React, { useCallback, useState } from "react";
 import { ModalWrapper } from "../modal/ModalWrapper";
-import { PaymentModal } from "../modal/PaymentModal";
+import { PaymentModal } from "../modal/PaymentModal/PaymentModal";
 
 export type ModalContextType = {
     isOpen: boolean;
