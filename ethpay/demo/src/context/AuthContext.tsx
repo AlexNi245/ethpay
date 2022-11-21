@@ -3,7 +3,7 @@ import { HttpClient } from "../client/HttpClient";
 import { Database } from "../storage/Database";
 
 export const AuthContext = React.createContext({
-    login: (_: string, __: string) => {},
+    login: async (_: string, __: string) => {},
     getSession: (_: string): string | undefined => {
         return undefined;
     },

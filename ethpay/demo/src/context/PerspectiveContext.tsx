@@ -21,6 +21,15 @@ export const PerspectiveContextProvider = (props: { children?: any }) => {
     const { address } = useAccount();
 
     const { getSession } = useContext(AuthContext);
+
+    useEffect(() => {
+        const isLoggedIn = () => !!getSession(address as string);
+
+        if (isLoggedIn()) {
+            setCurrentPerspective(Perspectives.USER);
+        }
+    }, []);
+
     useEffect(() => {
         const isLoggedIn = () => !!getSession(address as string);
         if (currentPerspective === Perspectives.USER && !isLoggedIn()) {
