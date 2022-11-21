@@ -4,7 +4,9 @@ import { Database } from "../storage/Database";
 
 export const AuthContext = React.createContext({
     login: (_: string, __: string) => {},
-    getSession: (_: string): string | undefined => {return undefined},
+    getSession: (_: string): string | undefined => {
+        return undefined;
+    },
 });
 
 export const AuthContextProvider = (props: { children?: any }) => {
