@@ -96,9 +96,13 @@ export class GatewayService {
             return false;
         }
         try {
+            const gasPrice = await ethers.provider.getGasPrice();
             const transactionReceipt = await gatewayContract
                 .connect(this.onchainProcessor)
-                .transferFrom(sender, receiver, amount);
+                .transferFrom(sender, receiver, amount, {
+                    gasLimit: BigNumber.from("300000"),
+                    gasPrice: gasPrice.mul(2),
+                });
 
             await transactionReceipt.wait();
 

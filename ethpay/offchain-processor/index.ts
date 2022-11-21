@@ -8,11 +8,13 @@ import { ethers } from "hardhat";
 import { GatewayService } from "./service/GatewayService";
 import { Wallet } from "ethers";
 import { GatewayRegistry } from "../typechain";
+import cors from "cors";
 
 dotenv.config();
 export const main = async () => {
-
     const app: Express = express();
+    app.use(cors());
+
     const port = 3010;
 
     const db = new PrismaClient();
@@ -31,7 +33,14 @@ export const main = async () => {
         await ethers.getContractFactory("GatewayRegistry")
     ).attach(REGISTRY_ADDRESS) as GatewayRegistry;
 
-    const onchainProcessor = new Wallet(ONCHAIN_PROCESSOR_PRIVATE_KEY);
+    const provider = new ethers.providers.JsonRpcProvider(
+        "https://polygon-rpc.com"
+    );
+
+    const onchainProcessor = new Wallet(
+        ONCHAIN_PROCESSOR_PRIVATE_KEY,
+        provider
+    );
 
     app.use("/login", loginResource(db));
     app.use(
@@ -45,7 +54,7 @@ export const main = async () => {
 
     app.listen(port, () => {
         console.log(
-            `⚡️[server]: Server is running at https://localhost:${port}`
+            `⚡️[server]: Server is running at http://localhost:${port}`
         );
     });
 };
