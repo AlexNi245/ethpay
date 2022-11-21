@@ -16,6 +16,7 @@ import { AuthContextProvider } from "./context/AuthContext";
 import { CurrentPerspective } from "./views/Perspective/CurrentPerspective";
 import { PerspectiveContextProvider } from "./context/PerspectiveContext";
 import { PaymentContextProvider } from "./context/PaymentContext";
+import { ModalContextProvider } from "./context/ModalContext";
 
 export const App = () => {
     const { chains, provider } = configureChains(
@@ -67,7 +68,9 @@ export const App = () => {
                     <AuthContextProvider>
                         <PerspectiveContextProvider>
                             <PaymentContextProvider>
-                                <MainView />
+                                <ModalContextProvider>
+                                    <MainView />
+                                </ModalContextProvider>
                             </PaymentContextProvider>
                         </PerspectiveContextProvider>
                     </AuthContextProvider>
