@@ -15,6 +15,7 @@ import { Perspective } from "./views/Perspective/Perspective";
 import { AuthContextProvider } from "./context/AuthContext";
 import { CurrentPerspective } from "./views/Perspective/CurrentPerspective";
 import { PerspectiveContextProvider } from "./context/PerspectiveContext";
+import { PaymentContextProvider } from "./context/PaymentContext";
 
 export const App = () => {
     const { chains, provider } = configureChains(
@@ -65,7 +66,9 @@ export const App = () => {
                 <RainbowKitProvider chains={chains}>
                     <AuthContextProvider>
                         <PerspectiveContextProvider>
-                            <MainView />
+                            <PaymentContextProvider>
+                                <MainView />
+                            </PaymentContextProvider>
                         </PerspectiveContextProvider>
                     </AuthContextProvider>
                 </RainbowKitProvider>

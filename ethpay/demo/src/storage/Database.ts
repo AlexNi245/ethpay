@@ -18,6 +18,6 @@ export class Database {
             localStorage.getItem(this.sessionKey) ?? "{}"
         );
 
-        return allSessions[address];
+        return allSessions[address].jwt;
     }
 }
