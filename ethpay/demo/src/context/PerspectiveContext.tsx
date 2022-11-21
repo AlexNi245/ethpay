@@ -32,9 +32,15 @@ export const PerspectiveContextProvider = (props: { children?: any }) => {
 
     useEffect(() => {
         const isLoggedIn = () => !!getSession(address as string);
+        if (currentPerspective === Perspectives.LOGIN && isLoggedIn()) {
+            //User switch accounts and is already logged in
+            setCurrentPerspective(Perspectives.USER);
+            return;
+        }
         if (currentPerspective === Perspectives.USER && !isLoggedIn()) {
             console.log("User has no session move to login");
             setCurrentPerspective(Perspectives.LOGIN);
+            return;
         }
     }, [currentPerspective, address, getSession]);
 

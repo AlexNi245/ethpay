@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useContract, useProvider } from "wagmi";
-import { ERC20Abi } from "./useAllowance/erc20abit";
+import { ERC20Abi } from "./useTokenInfomation/erc20abit";
 
 const supportedTokens = [
     {

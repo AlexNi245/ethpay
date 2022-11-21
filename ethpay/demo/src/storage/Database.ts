@@ -18,6 +18,12 @@ export class Database {
             localStorage.getItem(this.sessionKey) ?? "{}"
         );
 
-        return allSessions[address].jwt;
+        const session = allSessions[address];
+
+        if (!session) {
+            return undefined;
+        }
+
+        return session.jwt;
     }
 }
