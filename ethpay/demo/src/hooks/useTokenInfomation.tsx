@@ -24,11 +24,12 @@ const supportedTokens = [
     },
 ];
 
-export const useAllowance = (address: string) => {
+export const useTokenInfomation = (address: string) => {
     const provider = useProvider();
     const [isLoading, setisLoading] = useState(true);
 
     const [allowances, setallowances] = useState<string[]>([]);
+    const [balances, setBalances] = useState<string[]>([]);
 
     const wMatic = useContract({
         address: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
@@ -65,14 +66,24 @@ export const useAllowance = (address: string) => {
                     "0xf83C648A28f5194Eb8BE11270Aa0271d36d7802a"
                 ),
             ]);
+            const balances = await Promise.all([
+                wMatic?.balanceOf(address),
+                wBtcContract?.balanceOf(address),
+                usdcContract?.balanceOf(address),
+            ]);
             const humanReadableAllowance = allowances.map((a, idx) =>
                 ethers.utils.formatUnits(a, supportedTokens[idx].decimals)
             );
+            const humanReadableBalances = balances.map((a, idx) =>
+                ethers.utils.formatUnits(a, supportedTokens[idx].decimals)
+            );
+
             setallowances(humanReadableAllowance);
+            setBalances(humanReadableBalances);
             setisLoading(false);
         };
         getAllowances();
     }, [wMatic, wBtcContract, usdcContract, address]);
 
-    return { isLoading, allowances };
+    return { isLoading, allowances, balances };
 };
