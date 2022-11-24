@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useAccount } from "wagmi";
 import { ModalContext } from "../../context/ModalContext";
 import { PaymentContext } from "../../context/PaymentContext";
+import { Database } from "./../../storage/Database";
 import { PaymentModalContext, STEPS } from "./context/PaymentModalContext";
 
 export const PaymentOverview = () => {
@@ -18,19 +19,34 @@ export const PaymentOverview = () => {
         //WMATIC
         if (token === "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270") {
             console.log("Start wMatic payment");
-            await makeMaticPayment(address as string, amount, receiver);
+            const id = await makeMaticPayment(
+                address as string,
+                amount,
+                receiver
+            );
+            new Database().addItem(address as string, name, id);
             return onClose();
         }
         //USDC
         if (token === "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174") {
             console.log("Start usdc payment");
-            await makeUsdcPayment(address as string, amount, receiver);
+            const id = await makeUsdcPayment(
+                address as string,
+                amount,
+                receiver
+            ); 
+            new Database().addItem(address as string, name, id);
             return onClose();
         }
         //WBTC
         if (token === "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6") {
             console.log("Start wbtc payment");
-            await makeBtcPayment(address as string, amount, receiver);
+            const id = await makeBtcPayment(
+                address as string,
+                amount,
+                receiver
+            );
+            new Database().addItem(address as string, name, id);
             return onClose();
         }
     };

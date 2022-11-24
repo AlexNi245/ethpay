@@ -36,6 +36,18 @@ export class HttpClient {
         }
     }
 
+    public async getPaymentById(id: string) {
+        try {
+            const url = `${this.BASE_URL}/payment/id/${id}`;
+            const res = await axios.get(url);
+
+            return res.data.payment;
+        } catch (e) {
+            console.log(e);
+            return e;
+        }
+    }
+
     public login(address: string, messageSignature: string) {
         try {
             const url = `${this.BASE_URL}/login/`;

@@ -58,14 +58,14 @@ export const PaymentContextProvider = (props: { children?: any }) => {
             amountNumber.toString(),
             decimals
         );
-        const res = await new HttpClient().sendPayment(
+        const {id} = await new HttpClient().sendPayment(
             sender,
             address,
             receiver,
             amount.toHexString()
         );
 
-        return res;
+        return id;
     };
     const makeMaticPayment = (
         sender: string,
