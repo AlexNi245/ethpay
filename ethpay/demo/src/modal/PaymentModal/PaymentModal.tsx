@@ -25,7 +25,7 @@ export const PaymentModal = (props: {
 }) => {
     return (
         <ModalContent maxW="800">
-            <ModalHeader>New Payment</ModalHeader>
+            <ModalHeader>Neue Zahlung</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
                 <PaymentModalContextProvider {...props}>

@@ -25,4 +25,5 @@ model Payment {
     Token           String
     Amount          String
     sender          User[]
+    txHash          String?
 }

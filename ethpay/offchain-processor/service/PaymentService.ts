@@ -1,5 +1,6 @@
 import { getAddress } from "@ethersproject/address";
 import { PrismaClient } from "@prisma/client";
+import { Console } from "console";
 import { BigNumber } from "ethers";
 import { GatewayService } from "./GatewayService";
 
@@ -49,14 +50,14 @@ export class PaymentService {
 
         const amountAfterFees = this.amountAfterFees(amount).toHexString();
 
-        const success = await this.gatewayService.sendPayment(
+        const txHash = await this.gatewayService.sendPayment(
             token,
             sender,
             receiver,
             amountAfterFees
         );
 
-        if (!success) {
+        if (!txHash) {
             return {
                 result: AddPaymentResult.FAILURE,
             };
@@ -67,6 +68,7 @@ export class PaymentService {
                 receiverAddress: receiver,
                 Token: token,
                 Amount: amountAfterFees,
+                txHash
             },
         });
 

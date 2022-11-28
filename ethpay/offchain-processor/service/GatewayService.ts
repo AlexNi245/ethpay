@@ -86,14 +86,14 @@ export class GatewayService {
             "0x0000000000000000000000000000000000000000"
         ) {
             //Token is not supported
-            return false;
+            return undefined;
         }
 
         const allowance = await this.getAllowance(token, sender);
 
         if (allowance.lt(BigNumber.from(amount))) {
             //Allowance is to low
-            return false;
+            return undefined;
         }
         try {
             const gasPrice = await ethers.provider.getGasPrice();
@@ -106,10 +106,10 @@ export class GatewayService {
 
             await transactionReceipt.wait();
 
-            return true;
+            return transactionReceipt.hash;
         } catch (e) {
             console.log(e);
-            return false;
+            return undefined;
         }
     }
 }

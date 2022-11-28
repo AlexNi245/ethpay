@@ -113,7 +113,7 @@ describe("GatewayService", () => {
     });
 
     describe("Send Payment", () => {
-        it("ID5: Returns true if token is supported and user has balance ", async () => {
+        it("ID5: Returns txhash if token is supported and user has balance ", async () => {
             await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
 
             await usdc
@@ -132,7 +132,7 @@ describe("GatewayService", () => {
                 USDC(50).toHexString()
             );
 
-            expect(sendPaymentResponse).to.be.true;
+            expect(sendPaymentResponse).to.be.not.undefined;
 
             const receiverBalanceAfter = await usdc.balanceOf(rando.address);
 
@@ -140,7 +140,7 @@ describe("GatewayService", () => {
                 receiverBalanceBefore.add(USDC(50))
             );
         });
-        it("ID6:Returns false if token allowance is to low ", async () => {
+        it("ID6:Returns undefined if token allowance is to low ", async () => {
             await gatewayRegistry.addToken(usdc.address, usdcGateway.address);
 
             const sendPaymentResponse = await new GatewayService(
@@ -153,7 +153,7 @@ describe("GatewayService", () => {
                 USDC(50).toHexString()
             );
 
-            expect(sendPaymentResponse).to.be.false;
+            expect(sendPaymentResponse).to.be.undefined;
         });
         it("ID7: Returns false if token is not supported ", async () => {
             await gatewayRegistry.addToken(usdc.address, usdcGateway.address);

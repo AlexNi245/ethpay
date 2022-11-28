@@ -16,10 +16,10 @@ export const Merchant = () => {
             <Heading>Payments</Heading>
             <Text>Alle vergangenen Payments</Text>
             <Box h="6" />
-            <Flex justifyContent="space-around">
+            <Box px="12">
 
             <Payments />
-            </Flex>
+            </Box>
         </Box>
     );
 };
