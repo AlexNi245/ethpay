@@ -10,10 +10,10 @@ export const AllowanceTile = ({
     name: string;
 }) => {
     return (
-        <Flex>
+        <Flex flexDir="column"  >
             <Text fontWeight="bold">{name}</Text>
             <Box w="2" />
-            <Flex flexDirection="column">
+            <Flex flexDirection="column" ml="2">
                 <Flex justifyContent="space-between">
                     <Text>Allowance </Text>
                     <Box w="1" />

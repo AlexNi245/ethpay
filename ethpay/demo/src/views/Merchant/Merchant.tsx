@@ -4,7 +4,7 @@ import { Payments } from "./Payments/Payments";
 
 export const Merchant = () => {
     return (
-        <Box px="2">
+        <Box pt="6" px="12">
             <Heading>Balances</Heading>
             <Text>
                 Hier sehen sie die Guthaben der einzelnen Währungen des

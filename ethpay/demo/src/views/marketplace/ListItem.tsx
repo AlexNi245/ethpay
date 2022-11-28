@@ -14,7 +14,7 @@ export const ListItem = ({
     return (
         <Flex
             borderRadius="6px"
-            bg="#DCDCDC"
+            bg="red.300"
             p="2"
             justifyContent="space-between"
         >
