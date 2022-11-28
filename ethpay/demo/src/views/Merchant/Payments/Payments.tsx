@@ -38,7 +38,7 @@ export const Payments = () => {
         fetchPayments();
     }, []);
     return (
-        <Box maxW="1200">
+        <Box >
             <Grid templateColumns="repeat(6, 1fr)" gap={6}>
                 <GridItem fontWeight="bold">Sender</GridItem>
                 <GridItem fontWeight="bold">Empfänger</GridItem>

@@ -16,7 +16,7 @@ export const Balances = () => {
         token: "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270",
     });
     return (
-        <Flex justifyContent="space-between" maxW="900px">
+        <Flex justifyContent="space-around" >
             <BalanceTile currency="USDC" amount={usdc.data?.formatted??"0.00"} />
 
             <BalanceTile currency="wMatic" amount={wmatic.data?.formatted??"0.00"}  />

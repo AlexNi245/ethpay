@@ -34,16 +34,23 @@ export const Login = () => {
             <Heading>Login</Heading>
 
             <Box>
-                <Text>
-                    Um den Nutzer anzumelden, muss dieser eine Nachricht mit dem
-                    privaten Schlüssel seiner Metamask Wallet signieren. Das
-                    Backend kann anschließend überprüfen, ob die Nachricht
-                    tatsächlich von dieser Adresse signier wurde. Damit kann
-                    eine Authentifizierung ohne 3. Anbieter nur auf Basis von
-                    Public Key Kryptografie realisiert werden.
-                </Text>
+                <Box>
+                    <Text>
+                        Um den Nutzer anzumelden, muss dieser eine Nachricht mit
+                        dem privaten Schlüssel seiner Metamask Wallet signieren.
+                    </Text>
+                    <Text>
+                        Das Backend kann anschließend überprüfen, ob die
+                        Nachricht tatsächlich von dieser Adresse signiert wurde.
+                    </Text>
+                    <Text>
+                        Damit kann eine Authentifizierung ohne 3. Anbieter nur
+                        auf Basis von Public Key Kryptografie realisiert werden.
+                    </Text>
+                </Box>
+                <Text></Text>
 
-                <Box pt="8" pb="2">
+                <Box pt="12" pb="6">
                     <Button bg="green.300" onClick={() => signMessage()}>
                         Login with Ethereum
                     </Button>

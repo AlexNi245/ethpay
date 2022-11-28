@@ -23,8 +23,8 @@ export const ListItem = ({
                     {name}
                 </Text>
                 <Text>
-                    I'm a random items at the merchants shop you can buy with{" "}
-                    {currency}
+                    Ein beliebiges Item aus dem Onlineshop des Händlers. Sie
+                    können es mit {currency} kaufen
                 </Text>
             </Flex>
             <Flex alignItems="center">

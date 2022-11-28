@@ -19,7 +19,7 @@ export const MarketPlace = () => {
             <Box h="12" />
             <Box w="1200px" px="4">
                 <ListItem
-                    price={"0.1 USDC"}
+                    price={"0.01 USDC"}
                     name="Item 1"
                     currency="USDC"
                     onBuy={() => {

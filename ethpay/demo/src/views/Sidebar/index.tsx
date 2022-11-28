@@ -23,7 +23,7 @@ export const Sidebar = () => {
             justifyContent="space-between"
             minH="100vh"
             h="100%"
-            minW="200px"
+            maxW="300"
             bgColor={
                 currentPerspective === Perspectives.MERCHANT
                     ? "yellow.200"
@@ -81,7 +81,13 @@ export const Sidebar = () => {
             </Box>
             <Flex flexDirection="column" justifyContent="end" h="100%">
                 <Box px="2">
-                    <Explanation />
+                    <Heading size="md" fontWeight="bold">
+                        Erklärung
+                    </Heading>
+                    <Box h="2" />
+                    <Box px="2">
+                        <Explanation />
+                    </Box>
                 </Box>
                 <Box h="6" />
             </Flex>

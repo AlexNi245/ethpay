@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, Text } from "@chakra-ui/react";
 import { Balances } from "./Balances/Balances";
 import { Payments } from "./Payments/Payments";
 
@@ -10,15 +10,16 @@ export const Merchant = () => {
                 Hier sehen sie die Guthaben der einzelnen Währungen des
                 Merchants
             </Text>
-            <Box h="2" />
-
+            <Box h="6" />
             <Balances />
-            <Box h="8" />
+            <Box h="12" />
             <Heading>Payments</Heading>
             <Text>Alle vergangenen Payments</Text>
-            <Box h="2" />
+            <Box h="6" />
+            <Flex justifyContent="space-around">
 
             <Payments />
+            </Flex>
         </Box>
     );
 };
