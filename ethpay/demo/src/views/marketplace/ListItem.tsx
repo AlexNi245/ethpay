@@ -15,10 +15,11 @@ export const ListItem = ({
         <Flex
             borderRadius="6px"
             bg="red.300"
-            p="2"
+            py="3"
+            px="6"
             justifyContent="space-between"
         >
-            <Flex w="100" flexDirection="column">
+            <Flex flexDirection="column" >
                 <Text fontSize="lg" fontWeight="bold">
                     {name}
                 </Text>
@@ -27,20 +28,28 @@ export const ListItem = ({
                     können es mit {currency} kaufen
                 </Text>
             </Flex>
-            <Flex alignItems="center">
+
+            <Flex alignItems="center" justifyContent="space-between" w="40%">
+                <Box w="12" />
                 <Box>
                     <Text>Balance </Text>
                     <Text>0</Text>
                 </Box>
-                <Box w="4" />
-                <Box>
-                    <Text>Price </Text>
-                    <Text>{price}</Text>
-                </Box>
-                <Box w="4" />
-                <Button bg="green.300" onClick={onBuy}>
-                    Buy
-                </Button>
+                <Box w="12" />
+                <Flex
+                    w="100%"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Box>
+                        <Text>Price </Text>
+                        <Text>{price}</Text>
+                    </Box>
+                    <Box w="4" />
+                    <Button bg="green.300" onClick={onBuy}>
+                        Buy
+                    </Button>
+                </Flex>
             </Flex>
         </Flex>
     );

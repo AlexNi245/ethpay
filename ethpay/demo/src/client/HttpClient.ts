@@ -30,9 +30,9 @@ export class HttpClient {
             );
 
             return res.data;
-        } catch (e) {
+        } catch (e:any) {
             console.log(e);
-            return e;
+            return e.response.data;
         }
     }
 

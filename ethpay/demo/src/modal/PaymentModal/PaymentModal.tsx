@@ -1,17 +1,15 @@
 import {
-    Button,
     Flex,
     ModalBody,
     ModalCloseButton,
     ModalContent,
-    ModalHeader,
+    ModalHeader
 } from "@chakra-ui/react";
 import { useContext } from "react";
-import { ModalContext } from "../../context/ModalContext";
 import {
     PaymentModalContext,
     PaymentModalContextProvider,
-    STEPS,
+    STEPS
 } from "./context/PaymentModalContext";
 import { PaymentConfirmation } from "./PaymentConfirmation";
 import { PaymentOverview } from "./PaymentOverview";
@@ -37,11 +35,10 @@ export const PaymentModal = (props: {
 };
 const Content = () => {
     const { steps } = useContext(PaymentModalContext);
-    const { onClose } = useContext(ModalContext);
 
     return (
         <Flex direction="column">
-            {steps === STEPS.Overview && <PaymentOverview />}
+            {steps === STEPS.Overview && <PaymentOverview  />}
             {steps === STEPS.Confirmation && <PaymentConfirmation />}
         </Flex>
     );

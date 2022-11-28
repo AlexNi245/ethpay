@@ -53,7 +53,7 @@ export const Payments = () => {
                 <GridItem fontWeight="bold">Menge</GridItem>
                 <GridItem fontWeight="bold">Token</GridItem>
                 <GridItem fontWeight="bold">Erstellungsdatum</GridItem>
-                <GridItem fontWeight="bold">Transaktion in Blockexplorer anzeigen</GridItem>
+                <GridItem fontWeight="bold">Transaktion im Blockexplorer anzeigen</GridItem>
             </Grid>
             {payments.map((p) => (
                 <PaymentTile {...p} />

@@ -49,6 +49,7 @@ export const App = () => {
                     //color: "yellow",
                     padding: 0,
                     margin: 0,
+                    fontSize:"18px"
                 }),
             },
         },

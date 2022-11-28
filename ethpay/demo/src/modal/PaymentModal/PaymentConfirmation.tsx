@@ -1,7 +1,4 @@
 import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
-import { useContext } from "react";
-import { ModalContext } from "../../context/ModalContext";
-import { PaymentModalContext } from "./context/PaymentModalContext";
 
 export const PaymentConfirmation = () => {
 

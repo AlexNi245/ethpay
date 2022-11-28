@@ -7,17 +7,17 @@ export const PaymentContext = React.createContext({
         sender: string,
         amountNumber: number,
         receiver: string
-    ): Promise<string> => Promise.resolve(""),
+    ): Promise<{ id?: string; error?: string }> => Promise.resolve({ id: "" }),
     makeMaticPayment: (
         sender: string,
         amountNumber: number,
         receiver: string
-    ): Promise<string> => Promise.resolve(""),
+    ): Promise<{ id?: string; error?: string }> => Promise.resolve({ id: "" }),
     makeBtcPayment: (
         sender: string,
         amountNumber: number,
         receiver: string
-    ): Promise<string> => Promise.resolve(""),
+    ): Promise<{ id?: string; error?: string }> => Promise.resolve({ id: "" }),
 });
 
 export const PaymentContextProvider = (props: { children?: any }) => {
@@ -58,14 +58,14 @@ export const PaymentContextProvider = (props: { children?: any }) => {
             amountNumber.toString(),
             decimals
         );
-        const {id} = await new HttpClient().sendPayment(
+        const { id, error } = await new HttpClient().sendPayment(
             sender,
             address,
             receiver,
             amount.toHexString()
         );
 
-        return id;
+        return { id, error };
     };
     const makeMaticPayment = (
         sender: string,
