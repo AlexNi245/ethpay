@@ -34,7 +34,7 @@ export const MarketPlace = () => {
                 />
                 <Box h="3"></Box>
                 <ListItem
-                    price={"0.012 Matic"}
+                    price={"0.01 Matic"}
                     name="Item 2"
                     currency="wMatic"
                     onBuy={() => {

@@ -22,7 +22,8 @@ export const PaymentModal = (props: {
     receiver: string;
 }) => {
     return (
-        <ModalContent maxW="800">
+        <ModalContent maxW="800" py="3"
+        px="6">
             <ModalHeader>Neue Zahlung</ModalHeader>
             <ModalCloseButton />
             <ModalBody>

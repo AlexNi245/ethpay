@@ -45,6 +45,7 @@ export class Database {
             {
                 name,
                 id,
+                sender: address,
                 createdAt: new Date(),
             } as PaymentDto,
         ];
@@ -67,7 +68,6 @@ export class Database {
             (cur, agg) => [...cur, ...users[agg]],
             [] as any[]
         );
-
 
         return items;
     }

@@ -89,7 +89,8 @@ export const PaymentOverview = () => {
     };
 
     return (
-        <Flex flexDirection="column">
+        <Flex flexDirection="column"
+        >
             <Text fontWeight="bold">
                 Bitte authorisieren Sie die folgende Zahlung für {name}
             </Text>

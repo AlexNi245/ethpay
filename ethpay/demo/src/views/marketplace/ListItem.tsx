@@ -1,4 +1,7 @@
 import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
+import { Database } from "../../storage/Database";
 
 export const ListItem = ({
     name,
@@ -11,6 +14,15 @@ export const ListItem = ({
     price: string;
     onBuy: () => void;
 }) => {
+    const { address } = useAccount();
+    const getBalance = () => {
+        const db = new Database();
+
+        return db
+            .getItems()
+            .filter((i) => i.name === name && i.sender === address).length;
+    };
+
     return (
         <Flex
             borderRadius="6px"
@@ -19,7 +31,7 @@ export const ListItem = ({
             px="6"
             justifyContent="space-between"
         >
-            <Flex flexDirection="column" >
+            <Flex flexDirection="column">
                 <Text fontSize="lg" fontWeight="bold">
                     {name}
                 </Text>
@@ -33,7 +45,7 @@ export const ListItem = ({
                 <Box w="12" />
                 <Box>
                     <Text>Balance </Text>
-                    <Text>0</Text>
+                    <Text>{getBalance()}</Text>
                 </Box>
                 <Box w="12" />
                 <Flex

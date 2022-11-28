@@ -6,9 +6,9 @@ export const PaymentConfirmation = () => {
     return (
         <Flex flexDirection="column" alignItems="center">
             <Text fontWeight="bold">Zahlung wird verarbeitet</Text>
-            <Box h="2" />
-            <Spinner />
-            <Box h="2" />
+            <Box h="12" />
+            <Spinner color="red.200"/>
+            <Box h="6" />
         </Flex>
     );
 };
