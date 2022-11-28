@@ -1,11 +1,15 @@
 import { QuestionIcon } from "@chakra-ui/icons";
 import { Box, Flex, Heading, Select, Text, Tooltip } from "@chakra-ui/react";
+import { useContext } from "react";
 import { useAccount } from "wagmi";
+import { PerspectiveContext, Perspectives } from "../../context/PerspectiveContext";
 import { Explanation } from "./Explanation";
 import { RoleSwitch } from "./RoleSwitch";
 
 export const Sidebar = () => {
     const { address } = useAccount();
+
+    const {currentPerspective} = useContext(PerspectiveContext)
     return (
         <Flex
             direction="column"
@@ -13,7 +17,7 @@ export const Sidebar = () => {
             minH="100vh"
             h="100%"
             minW="200px"
-            bgColor="gray.200"
+            bgColor={currentPerspective ===Perspectives.MERCHANT ? "yellow.200" : "red.200"}
         >
             <Box pt="6" px="2">
                 <RoleSwitch />
