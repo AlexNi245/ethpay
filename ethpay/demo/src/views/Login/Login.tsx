@@ -6,6 +6,7 @@ import {
     PerspectiveContext,
     Perspectives,
 } from "../../context/PerspectiveContext";
+import { ConnectButton as WagmiConnectButton } from "@rainbow-me/rainbowkit";
 
 const AUTH_MESSAGE = "I accept the Terms of Service of Ethpay";
 
@@ -17,6 +18,7 @@ export const Login = () => {
     });
 
     const { address } = useAccount();
+    const { isConnected } = useAccount();
 
     useEffect(() => {
         const onLogin = async () => {
@@ -51,9 +53,13 @@ export const Login = () => {
                 <Text></Text>
 
                 <Box pt="12" pb="6">
-                    <Button bg="green.300" onClick={() => signMessage()}>
-                        Login with Ethereum
-                    </Button>
+                    {isConnected ? (
+                        <Button bg="green.300" onClick={() => signMessage()}>
+                            Login with Ethereum
+                        </Button>
+                    ) : (
+                        <WagmiConnectButton />
+                    )}
                 </Box>
                 <Text fontWeight="bold">
                     Die aktuell mit MetaMask verbundene Adresse ist noch nicht
