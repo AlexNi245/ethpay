@@ -2,7 +2,7 @@ import axios from "axios";
 import { Database } from "../storage/Database";
 
 export class HttpClient {
-    private readonly BASE_URL = "http://128.199.59.38:3010";
+    private readonly BASE_URL = "https://128.199.59.38:3010";
 
     private getAuthHeader(address: string) {
         return {

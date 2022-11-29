@@ -9,8 +9,22 @@ import { GatewayService } from "./service/GatewayService";
 import { Wallet } from "ethers";
 import { GatewayRegistry } from "../typechain";
 import cors from "cors";
-
+import fs from "fs";
+import https from "https";
 dotenv.config();
+
+const getCerts = () => {
+    var key = fs.readFileSync(__dirname + "/certs/selfsigned.key");
+    var cert = fs.readFileSync(__dirname + "/certs/selfsigned.crt");
+    var options = {
+        key: key,
+        cert: cert,
+    };
+
+    console.log("read keys", options);
+
+    return options;
+};
 export const main = async () => {
     const app: Express = express();
     app.use(cors());
@@ -52,7 +66,9 @@ export const main = async () => {
     );
     app.use("/token", tokenResource(db, gatewayRegistry, onchainProcessor));
 
-    app.listen(port, () => {
+    var server = https.createServer(getCerts(), app);
+
+    server.listen(port, () => {
         console.log(
             `⚡️[server]: Server is running at http://localhost:${port}`
         );

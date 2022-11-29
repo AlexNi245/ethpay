@@ -24,7 +24,7 @@ export const Explanation = () => {
     );
     const LoginExplanation = (
         <Box>
-            <Text fontWeight="bold">Herlich Willkommen !</Text>
+            <Text fontWeight="bold">Herzlick Willkommen !</Text>
             <Text>
                 Login With Ethereum nutzt die Möglichkeit Ihrer Wallet
                 Nachrichten mit dem privaten Schlüssel zu signieren.
