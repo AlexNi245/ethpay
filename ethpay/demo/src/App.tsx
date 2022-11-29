@@ -1,24 +1,21 @@
-import {
-    Box,
-    ChakraProvider,
-    extendTheme,
-    Flex,
-    theme,
-} from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, Flex } from "@chakra-ui/react";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
+import "@rainbow-me/rainbowkit/styles.css";
+import { useEffect, useState } from "react";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
-import { MarketPlace } from "./views/Marketplace/Marketplace";
-import "@rainbow-me/rainbowkit/styles.css";
-import { Sidebar } from "./views/Sidebar";
-import { Perspective } from "./views/Perspective/Perspective";
+import { AccessWrapper } from "./AccessWrapper";
 import { AuthContextProvider } from "./context/AuthContext";
-import { CurrentPerspective } from "./views/Perspective/CurrentPerspective";
-import { PerspectiveContextProvider } from "./context/PerspectiveContext";
-import { PaymentContextProvider } from "./context/PaymentContext";
 import { ModalContextProvider } from "./context/ModalContext";
+import { PaymentContextProvider } from "./context/PaymentContext";
+import { PerspectiveContextProvider } from "./context/PerspectiveContext";
+import { Database } from "./storage/Database";
+import { Perspective } from "./views/Perspective/Perspective";
+import { Sidebar } from "./views/Sidebar";
 
 export const App = () => {
+    const [hasAccess, setHasAccess] = useState(new Database().checkAccess());
+
     const { chains, provider } = configureChains(
         [chain.polygon],
         [publicProvider()]
@@ -49,7 +46,7 @@ export const App = () => {
                     //color: "yellow",
                     padding: 0,
                     margin: 0,
-                    fontSize:"18px"
+                    fontSize: "18px",
                 }),
             },
         },
@@ -70,7 +67,13 @@ export const App = () => {
                         <PerspectiveContextProvider>
                             <PaymentContextProvider>
                                 <ModalContextProvider>
-                                    <MainView />
+                                    {hasAccess ? (
+                                        <MainView />
+                                    ) : (
+                                        <AccessWrapper
+                                            onUnlock={() => setHasAccess(true)}
+                                        />
+                                    )}
                                 </ModalContextProvider>
                             </PaymentContextProvider>
                         </PerspectiveContextProvider>

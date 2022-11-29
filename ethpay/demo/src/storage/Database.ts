@@ -6,6 +6,7 @@ export interface PaymentDto {
 export class Database {
     private readonly sessionKey = "ETHPAY_AUTH_STORAGE";
     private readonly itemsKey = "ETHPAY_ITEMS";
+    private readonly accessKey = "ETHPAY_ACCESS";
 
     public login(address: string, token: string) {
         const oldItems = JSON.parse(
@@ -70,5 +71,12 @@ export class Database {
         );
 
         return items;
+    }
+
+    public addAccess() {
+        localStorage.setItem(this.accessKey, "true");
+    }
+    public checkAccess() {
+        return localStorage.getItem(this.accessKey) === "true";
     }
 }
