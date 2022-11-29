@@ -1,4 +1,5 @@
 import { Grid, GridItem, Text } from "@chakra-ui/react";
+import { getTokenName } from "../../../utils/formatAmount";
 
 export const PaymentTile = ({
     sender,
@@ -15,8 +16,6 @@ export const PaymentTile = ({
     txHash: string;
     createdAt: Date;
 }) => {
- 
-
     const formatAddr = (addr: string) =>
         `${addr.substring(0, 6)}...${addr.slice(-6)}`;
     return (
@@ -31,7 +30,7 @@ export const PaymentTile = ({
                 <Text>{amount}</Text>
             </GridItem>
             <GridItem>
-                <Text>USDC</Text>
+                <Text>{getTokenName(token)}</Text>
             </GridItem>
             <GridItem>
                 <Text>

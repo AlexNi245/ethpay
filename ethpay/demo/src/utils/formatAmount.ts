@@ -26,3 +26,7 @@ export const formatAmount = (amount: BigNumber, token: string) => {
 
     return ethers.utils.formatUnits(amount, tokenObj!.decimals);
 };
+export const getTokenName = (token: string) => {
+    const tokenObj = supportedTokens.find((t) => t.address === token);
+    return tokenObj?.name;
+};

@@ -14,7 +14,11 @@ export const Payments = () => {
     const formatTxHash = (txhash: string) => {
         const url = `https://polygonscan.com/tx/${txhash}`;
 
-        return <Link textColor="blue" isExternal href={url}>{formatAddr(txhash)}</Link>;
+        return (
+            <Link textColor="blue" isExternal href={url}>
+                {formatAddr(txhash)}
+            </Link>
+        );
     };
 
     useEffect(() => {
@@ -22,22 +26,24 @@ export const Payments = () => {
 
         const fetchPayments = async () => {
             const resolved = await Promise.all(
-                payments.map(async (p: PaymentDto) => {
-                    const resovledPayment =
-                        await new HttpClient().getPaymentById(p.id);
+                payments
+                    .map(async (p: PaymentDto) => {
+                        const resovledPayment =
+                            await new HttpClient().getPaymentById(p.id);
 
-                    return {
-                        sender: resovledPayment.senderAddress,
-                        receiver: resovledPayment.receiverAddress,
-                        amount: formatAmount(
-                            resovledPayment.Amount,
-                            resovledPayment.Token
-                        ),
-                        token: resovledPayment.Token,
-                        txHash: formatTxHash(resovledPayment.txHash),
-                        createdAt: new Date(p.createdAt),
-                    };
-                })
+                        return {
+                            sender: resovledPayment.senderAddress,
+                            receiver: resovledPayment.receiverAddress,
+                            amount: formatAmount(
+                                resovledPayment.Amount,
+                                resovledPayment.Token
+                            ),
+                            token: resovledPayment.Token,
+                            txHash: formatTxHash(resovledPayment.txHash),
+                            createdAt: new Date(p.createdAt),
+                        };
+                    })
+                    .reverse()
             );
             setpayments(resolved);
             console.log(resolved);
@@ -46,14 +52,16 @@ export const Payments = () => {
         fetchPayments();
     }, []);
     return (
-        <Box >
+        <Box>
             <Grid templateColumns="repeat(6, 1fr)" gap={6}>
                 <GridItem fontWeight="bold">Sender</GridItem>
                 <GridItem fontWeight="bold">Empfänger</GridItem>
                 <GridItem fontWeight="bold">Menge</GridItem>
                 <GridItem fontWeight="bold">Token</GridItem>
                 <GridItem fontWeight="bold">Erstellungsdatum</GridItem>
-                <GridItem fontWeight="bold">Transaktion im Blockexplorer anzeigen</GridItem>
+                <GridItem fontWeight="bold">
+                    Transaktion im Blockexplorer anzeigen
+                </GridItem>
             </Grid>
             {payments.map((p) => (
                 <PaymentTile {...p} />
