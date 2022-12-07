@@ -105,7 +105,7 @@ export class GatewayService {
                 });
 
             await transactionReceipt.wait();
-
+            console.log("REC : ",transactionReceipt)
             return transactionReceipt.hash;
         } catch (e) {
             console.log(e);

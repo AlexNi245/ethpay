@@ -26,7 +26,7 @@ contract Gateway is IGateway {
         address sender,
         address recipient,
         uint256 amount
-    ) public override returns (bool) {
+    ) public override onlyProcessor returns (bool) {
         bool success = IERC20(token).transferFrom(sender, recipient, amount);
         if (success) {
             emit TransferSuccessful(sender, recipient, amount);

@@ -30,7 +30,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         "0x54D101Fe3e171C53D84CEFeec24EFd4c321A22C7"
     );
 
-    await gatewayRegistry.deployed();
+    //await gatewayRegistry.deployed();
 
     console.log("Gateway registry deployed at ", gatewayRegistry.address);
 
@@ -44,6 +44,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         WMATIC
     );
     console.log(`Matic Gateway deployed @ ${maticGateway.address}}`);
+
+    await maticGateway.deployed();
 
     const btcGateway = await gatewayFactory.deploy(ONCHAIN_PROCESSOR!, WBTC);
     await btcGateway.deployed();

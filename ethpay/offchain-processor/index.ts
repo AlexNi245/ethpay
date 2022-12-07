@@ -14,8 +14,8 @@ import https from "https";
 dotenv.config();
 
 const getCerts = () => {
-    var key = fs.readFileSync(__dirname + "/certs/selfsigned.key");
-    var cert = fs.readFileSync(__dirname + "/certs/selfsigned.crt");
+    var key = fs.readFileSync(__dirname + "/certs/privkey.pem");
+    var cert = fs.readFileSync(__dirname + "/certs/fullchain.pem");
     var options = {
         key: key,
         cert: cert,
@@ -55,6 +55,8 @@ export const main = async () => {
         ONCHAIN_PROCESSOR_PRIVATE_KEY,
         provider
     );
+
+
 
     app.use("/login", loginResource(db));
     app.use(

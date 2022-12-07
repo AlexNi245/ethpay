@@ -169,7 +169,7 @@ describe("GatewayService", () => {
                 USDC(50).toHexString()
             );
 
-            expect(sendPaymentResponse).to.be.false;
+            expect(sendPaymentResponse).to.be.undefined;
         });
     });
 });

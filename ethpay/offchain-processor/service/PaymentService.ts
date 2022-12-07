@@ -62,6 +62,7 @@ export class PaymentService {
                 result: AddPaymentResult.FAILURE,
             };
         }
+        console.log("TXHASH",txHash)
         const { id } = await this.db.payment.create({
             data: {
                 senderAddress: sender,

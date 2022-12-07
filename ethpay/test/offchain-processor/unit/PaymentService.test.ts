@@ -125,7 +125,7 @@ describe("PaymentService", () => {
                     Promise.resolve(BigNumber.from(10000)),
                 getBalance: (token: string, sender: string) =>
                     Promise.resolve(BigNumber.from(10000)),
-                sendPayment: () => Promise.resolve(true),
+                sendPayment: () => Promise.resolve("0x0"),
             } as unknown as GatewayService;
             const database = new PrismaClient();
 
@@ -161,7 +161,7 @@ describe("PaymentService", () => {
                     Promise.resolve(BigNumber.from(10000)),
                 getBalance: (token: string, sender: string) =>
                     Promise.resolve(BigNumber.from(10000)),
-                sendPayment: () => Promise.resolve(true),
+                sendPayment: () => Promise.resolve("0x0"),
             } as unknown as GatewayService;
             const database = new PrismaClient();
 
